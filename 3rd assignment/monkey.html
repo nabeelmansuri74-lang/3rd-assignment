@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shinsei Village – Mystic Adventure</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --gold: #e8c96a;
+    --gold-dark: #c4a030;
+    --dark: #1a1420;
+    --dark2: #251e2e;
+    --pink-blossom: #e8a4b8;
+    --teal: #5ec4c0;
+    --text-light: #f0e8d8;
+    --text-muted: #b0a090;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Raleway', sans-serif;
+    background: var(--dark);
+    color: var(--text-light);
+    overflow-x: hidden;
+  }
+
+  /* ── NAVBAR ── */
+  nav {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 48px;
+  }
+
+  .nav-logo {
+    font-family: 'Cinzel', serif;
+    font-weight: 900;
+    font-size: 1.1rem;
+    letter-spacing: 0.12em;
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .nav-logo span { color: var(--gold); }
+
+  .nav-logo .logo-icon {
+    width: 32px; height: 32px;
+    background: var(--gold);
+    clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem;
+    color: var(--dark);
+    font-weight: 900;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 500;
+    font-size: 0.88rem;
+    letter-spacing: 0.08em;
+    color: var(--text-light);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  .nav-links a.active {
+    color: var(--gold);
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 2px;
+  }
+
+  .nav-links .external::after {
+    content: ' ↗';
+    font-size: 0.7em;
+    opacity: 0.7;
+  }
+
+  .nav-socials {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .nav-socials a {
+    width: 34px; height: 34px;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .nav-socials a:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    min-height: 700px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* layered background */
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 30%, rgba(180,120,160,0.35) 0%, transparent 70%),
+      linear-gradient(180deg, #3d2540 0%, #5c3060 25%, #8b5070 45%, #c0807a 60%, #d4a070 75%, #e8c090 85%, #b07850 100%);
+    z-index: 0;
+  }
+
+  /* mountain silhouette */
+  .hero-mountain {
+    position: absolute;
+    bottom: 38%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 420px;
+    height: 320px;
+    z-index: 1;
+  }
+
+  .hero-mountain svg { width: 100%; height: 100%; }
+
+  /* cherry blossoms trees */
+  .blossom-left, .blossom-right {
+    position: absolute;
+    bottom: 28%;
+    width: 280px;
+    height: 400px;
+    z-index: 2;
+    opacity: 0.9;
+  }
+
+  .blossom-left { left: -30px; }
+  .blossom-right { right: -30px; transform: scaleX(-1); }
+
+  /* river / ground */
+  .hero-ground {
+    position: absolute;
+    bottom: 0;
+    left: 0; right: 0;
+    height: 38%;
+    z-index: 3;
+  }
+
+  .hero-ground svg { width: 100%; height: 100%; }
+
+  /* temple */
+  .hero-temple {
+    position: absolute;
+    bottom: 32%;
+    left: 6%;
+    width: 200px;
+    z-index: 4;
+    opacity: 0.85;
+  }
+
+  /* hero text */
+  .hero-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    text-align: center;
+    width: 100%;
+    pointer-events: none;
+  }
+
+  .hero-subtitle {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 300;
+    font-size: 1rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 8px;
+    opacity: 0.9;
+  }
+
+  .hero-title {
+    font-family: 'Cinzel', serif;
+    font-weight: 900;
+    font-size: clamp(3.5rem, 9vw, 7rem);
+    line-height: 1;
+    color: #fff;
+    text-shadow: 0 4px 40px rgba(0,0,0,0.5);
+    letter-spacing: 0.04em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 0;
+  }
+
+  .title-gap {
+    display: inline-block;
+    width: clamp(120px, 18vw, 220px);
+    /* space for monkey character */
+  }
+
+  .hero-tagline {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 400;
+    font-size: 0.95rem;
+    letter-spacing: 0.2em;
+    color: var(--text-light);
+    opacity: 0.85;
+    margin-top: 4px;
+    text-align: right;
+    padding-right: clamp(20px, 8vw, 100px);
+  }
+
+  /* mint button */
+  .mint-btn-wrap {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 60px);
+    z-index: 50;
+  }
+
+  .mint-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #f0d060, #d4a828, #f0d060);
+    color: var(--dark);
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.25em;
+    padding: 16px 52px;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    clip-path: polygon(8px 0%, calc(100% - 8px) 0%, 100% 50%, calc(100% - 8px) 100%, 8px 100%, 0% 50%);
+    transition: filter 0.2s, transform 0.2s;
+    text-decoration: none;
+    pointer-events: all;
+  }
+
+  .mint-btn::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    background: rgba(0,0,0,0.35);
+    clip-path: polygon(8px 0%, calc(100% - 8px) 0%, 100% 50%, calc(100% - 8px) 100%, 8px 100%, 0% 50%);
+    z-index: -1;
+  }
+
+  .mint-btn:hover { filter: brightness(1.15); transform: translateY(-2px); }
+
+  /* monkey character */
+  .monkey-char {
+    position: absolute;
+    bottom: 28%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 12;
+    width: clamp(180px, 22vw, 320px);
+    filter: drop-shadow(0 20px 60px rgba(0,0,0,0.6));
+    animation: float 4s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-14px); }
+  }
+
+  /* floating petals */
+  .petal {
+    position: absolute;
+    width: 8px; height: 8px;
+    background: var(--pink-blossom);
+    border-radius: 50% 0 50% 0;
+    opacity: 0;
+    z-index: 6;
+    animation: fall linear infinite;
+  }
+
+  @keyframes fall {
+    0%   { transform: translateY(-20px) rotate(0deg); opacity: 0.7; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* ── WAVE DIVIDER ── */
+  .wave-divider {
+    position: relative;
+    background: var(--dark2);
+    margin-top: -2px;
+  }
+
+  .wave-divider svg { display: block; }
+
+  /* ── VISION SECTION ── */
+  .vision-section {
+    background: var(--dark2);
+    padding: 80px 48px 100px;
+    position: relative;
+  }
+
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    font-size: 2rem;
+    letter-spacing: 0.3em;
+    text-align: center;
+    color: var(--text-light);
+    margin-bottom: 18px;
+  }
+
+  .divider-ornament {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 56px;
+  }
+
+  .divider-ornament .line {
+    flex: 1;
+    max-width: 200px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold-dark), transparent);
+  }
+
+  .divider-ornament .diamond {
+    width: 10px; height: 10px;
+    background: var(--gold);
+    transform: rotate(45deg);
+  }
+
+  .vision-grid {
+    display: flex;
+    gap: 60px;
+    max-width: 960px;
+    margin: 0 auto;
+    align-items: flex-start;
+  }
+
+  .vision-col {
+    flex: 1;
+    font-size: 0.9rem;
+    line-height: 1.85;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .vision-col strong {
+    color: var(--text-light);
+    font-weight: 600;
+  }
+
+  /* ── PARTICLES ── */
+  #particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+</style>
+</head>
+<body>
+
+<!-- ════════════ NAVBAR ════════════ -->
+<nav>
+  <div class="nav-logo">
+    <div class="logo-icon">SV</div>
+    SHINSEI <span>&nbsp;✦&nbsp;</span> VILLAGE
+  </div>
+
+  <ul class="nav-links">
+    <li><a href="#" class="active">Vision</a></li>
+    <li><a href="#">Collection</a></li>
+    <li><a href="#">Roadmap</a></li>
+    <li><a href="#">Team</a></li>
+    <li><a href="#" class="external">Mint</a></li>
+    <li><a href="#" class="external">Wallet Checker</a></li>
+  </ul>
+
+  <div class="nav-socials">
+    <a href="#" title="Instagram">&#9711;</a>
+    <a href="#" title="Telegram">&#10148;</a>
+    <a href="#" title="Discord">&#9670;</a>
+  </div>
+</nav>
+
+<!-- ════════════ HERO ════════════ -->
+<section class="hero">
+
+  <!-- Background gradient sky -->
+  <div class="hero-bg"></div>
+
+  <!-- Mountain -->
+  <div class="hero-mountain">
+    <svg viewBox="0 0 420 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="mtnGrad" x1="210" y1="0" x2="210" y2="320" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#6b5070" stop-opacity="0.95"/>
+          <stop offset="100%" stop-color="#3a2840" stop-opacity="0.8"/>
+        </linearGradient>
+      </defs>
+      <!-- main peak -->
+      <polygon points="210,10 350,260 70,260" fill="url(#mtnGrad)"/>
+      <!-- secondary peak left -->
+      <polygon points="90,80 180,260 0,260" fill="#4a3558" opacity="0.7"/>
+      <!-- secondary peak right -->
+      <polygon points="330,100 420,260 240,260" fill="#4a3558" opacity="0.7"/>
+      <!-- snow cap -->
+      <polygon points="210,10 240,70 180,70" fill="rgba(255,255,255,0.15)"/>
+    </svg>
+  </div>
+
+  <!-- Blossom Trees -->
+  <div class="blossom-left">
+    <svg viewBox="0 0 280 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="blossomL" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#f0a0c0" stop-opacity="0.9"/>
+          <stop offset="100%" stop-color="#c06080" stop-opacity="0.6"/>
+        </radialGradient>
+      </defs>
+      <!-- trunk -->
+      <path d="M140,400 C138,350 130,300 125,250 C120,200 128,150 140,100" stroke="#5a3020" stroke-width="10" fill="none" stroke-linecap="round"/>
+      <!-- branches -->
+      <path d="M135,280 C110,260 80,250 50,240" stroke="#5a3020" stroke-width="6" fill="none"/>
+      <path d="M130,220 C100,200 70,185 30,175" stroke="#5a3020" stroke-width="5" fill="none"/>
+      <path d="M137,160 C115,140 95,120 70,100" stroke="#5a3020" stroke-width="4" fill="none"/>
+      <path d="M142,130 C160,110 175,90 185,65" stroke="#5a3020" stroke-width="4" fill="none"/>
+      <!-- blossom clusters -->
+      <ellipse cx="50" cy="235" rx="55" ry="40" fill="url(#blossomL)" opacity="0.85"/>
+      <ellipse cx="30" cy="170" rx="50" ry="35" fill="url(#blossomL)" opacity="0.8"/>
+      <ellipse cx="70" cy="95" rx="45" ry="38" fill="url(#blossomL)" opacity="0.75"/>
+      <ellipse cx="185" cy="58" rx="40" ry="32" fill="url(#blossomL)" opacity="0.8"/>
+      <ellipse cx="140" cy="95" rx="55" ry="42" fill="url(#blossomL)" opacity="0.85"/>
+      <ellipse cx="100" cy="130" rx="48" ry="36" fill="url(#blossomL)" opacity="0.7"/>
+    </svg>
+  </div>
+
+  <div class="blossom-right">
+    <svg viewBox="0 0 280 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="blossomR" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#f0a0c0" stop-opacity="0.9"/>
+          <stop offset="100%" stop-color="#c06080" stop-opacity="0.6"/>
+        </radialGradient>
+      </defs>
+      <path d="M140,400 C138,350 130,300 125,250 C120,200 128,150 140,100" stroke="#5a3020" stroke-width="10" fill="none" stroke-linecap="round"/>
+      <path d="M135,280 C110,260 80,250 50,240" stroke="#5a3020" stroke-width="6" fill="none"/>
+      <path d="M130,220 C100,200 70,185 30,175" stroke="#5a3020" stroke-width="5" fill="none"/>
+      <path d="M137,160 C115,140 95,120 70,100" stroke="#5a3020" stroke-width="4" fill="none"/>
+      <path d="M142,130 C160,110 175,90 185,65" stroke="#5a3020" stroke-width="4" fill="none"/>
+      <ellipse cx="50" cy="235" rx="55" ry="40" fill="url(#blossomR)" opacity="0.85"/>
+      <ellipse cx="30" cy="170" rx="50" ry="35" fill="url(#blossomR)" opacity="0.8"/>
+      <ellipse cx="70" cy="95" rx="45" ry="38" fill="url(#blossomR)" opacity="0.75"/>
+      <ellipse cx="185" cy="58" rx="40" ry="32" fill="url(#blossomR)" opacity="0.8"/>
+      <ellipse cx="140" cy="95" rx="55" ry="42" fill="url(#blossomR)" opacity="0.85"/>
+      <ellipse cx="100" cy="130" rx="48" ry="36" fill="url(#blossomR)" opacity="0.7"/>
+    </svg>
+  </div>
+
+  <!-- Temple silhouette -->
+  <div class="hero-temple">
+    <svg viewBox="0 0 200 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="templeGrad" x1="0" y1="0" x2="0" y2="240" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#8b4513" stop-opacity="0.9"/>
+          <stop offset="100%" stop-color="#3d1f0a" stop-opacity="0.95"/>
+        </linearGradient>
+      </defs>
+      <!-- base platform -->
+      <rect x="20" y="200" width="160" height="40" fill="url(#templeGrad)" rx="2"/>
+      <!-- main building -->
+      <rect x="40" y="140" width="120" height="65" fill="url(#templeGrad)"/>
+      <!-- roof tier 1 -->
+      <polygon points="30,140 100,110 170,140" fill="#a05020" opacity="0.95"/>
+      <line x1="30" y1="140" x2="170" y2="140" stroke="#c07030" stroke-width="2"/>
+      <!-- roof tier 2 -->
+      <polygon points="50,115 100,88 150,115" fill="#a05020" opacity="0.9"/>
+      <line x1="50" y1="115" x2="150" y2="115" stroke="#c07030" stroke-width="2"/>
+      <!-- roof tier 3 -->
+      <polygon points="65,92 100,70 135,92" fill="#a05020" opacity="0.85"/>
+      <!-- top spire -->
+      <line x1="100" y1="70" x2="100" y2="45" stroke="#c07030" stroke-width="3"/>
+      <circle cx="100" cy="43" r="4" fill="#e8c060"/>
+      <!-- door -->
+      <rect x="83" y="165" width="34" height="40" fill="#1a0f05" rx="2"/>
+      <!-- warm glow from windows -->
+      <rect x="55" y="155" width="20" height="18" fill="#f0a020" opacity="0.4" rx="2"/>
+      <rect x="125" y="155" width="20" height="18" fill="#f0a020" opacity="0.4" rx="2"/>
+      <!-- lanterns -->
+      <line x1="58" y1="140" x2="58" y2="155" stroke="#8b6020" stroke-width="1"/>
+      <rect x="52" y="155" width="12" height="16" fill="#e84020" opacity="0.8" rx="2"/>
+      <line x1="142" y1="140" x2="142" y2="155" stroke="#8b6020" stroke-width="1"/>
+      <rect x="136" y="155" width="12" height="16" fill="#e84020" opacity="0.8" rx="2"/>
+    </svg>
+  </div>
+
+  <!-- Ground / river -->
+  <div class="hero-ground">
+    <svg viewBox="0 0 1440 300" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="groundGrad" x1="0" y1="0" x2="0" y2="300" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#2a1f30" stop-opacity="0"/>
+          <stop offset="30%" stop-color="#1e1828" stop-opacity="0.95"/>
+          <stop offset="100%" stop-color="#140e1e" stop-opacity="1"/>
+        </linearGradient>
+        <linearGradient id="riverGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#4090b0" stop-opacity="0.5"/>
+          <stop offset="100%" stop-color="#204060" stop-opacity="0.8"/>
+        </linearGradient>
+      </defs>
+      <!-- river path -->
+      <path d="M500,0 C520,20 540,40 560,60 C580,80 600,100 650,120 C700,140 750,150 800,145 C850,140 900,120 940,100 C980,80 1000,60 1020,0 L1440,0 L1440,300 L0,300 Z" fill="url(#riverGrad)" opacity="0.45"/>
+      <!-- ground fill -->
+      <rect x="0" y="0" width="1440" height="300" fill="url(#groundGrad)"/>
+      <!-- curved top edge -->
+      <path d="M0,60 Q360,0 720,30 Q1080,60 1440,20 L1440,300 L0,300 Z" fill="#1a1428" opacity="0.9"/>
+    </svg>
+  </div>
+
+  <!-- Hero Text -->
+  <div class="hero-text">
+    <p class="hero-subtitle">Join the Mystic Adventure</p>
+    <h1 class="hero-title">
+      <span>SHINSEI</span>
+      <span class="title-gap"></span>
+      <span>VILLAGE</span>
+    </h1>
+    <p class="hero-tagline">Genuine Storytelling Project</p>
+  </div>
+
+  <!-- Mint Button -->
+  <div class ="mint-btn-wrap">
+    <a href="#" class="mint-btn">MINT NOW</a>
+  </div>
+
+  <!-- Monkey character (SVG illustration) -->
+  <div class="monkey-char">
+    <svg viewBox="0 0 300 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="skinGrad" x1="150" y1="0" x2="150" y2="420" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#c8a060"/>
+          <stop offset="100%" stop-color="#a07840"/>
+        </linearGradient>
+        <linearGradient id="robeGrad" x1="0" y1="200" x2="300" y2="420" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#2080a0"/>
+          <stop offset="100%" stop-color="#104060"/>
+        </linearGradient>
+        <linearGradient id="hairGrad" x1="150" y1="30" x2="150" y2="100" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#e8c060"/>
+          <stop offset="100%" stop-color="#b08020"/>
+        </linearGradient>
+        <radialGradient id="faceGrad" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#d4a870"/>
+          <stop offset="100%" stop-color="#b08040"/>
+        </radialGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- ── BODY / ROBE ── -->
+      <!-- pants / lower body -->
+      <path d="M95,290 L80,400 L125,400 L150,320 L175,400 L220,400 L205,290 Z" fill="#c8b080"/>
+      <!-- robe body -->
+      <path d="M70,200 C65,240 60,270 65,300 L100,300 L150,280 L200,300 L235,300 C240,270 235,240 230,200 C220,190 190,185 150,185 C110,185 80,190 70,200 Z" fill="url(#robeGrad)"/>
+      <!-- robe collar / inner -->
+      <path d="M120,185 L150,220 L180,185" fill="none" stroke="#f0f0e0" stroke-width="3"/>
+      <!-- left sleeve arm -->
+      <path d="M70,200 C55,210 40,225 30,245 C25,255 28,268 40,270 C52,272 65,255 75,240 L95,220 Z" fill="url(#robeGrad)"/>
+      <!-- right sleeve arm -->
+      <path d="M230,200 C245,210 260,225 270,245 C275,255 272,268 260,270 C248,272 235,255 225,240 L205,220 Z" fill="url(#robeGrad)"/>
+      <!-- robe pattern/flowers -->
+      <circle cx="100" cy="230" r="8" fill="none" stroke="#80d0d0" stroke-width="1.5" opacity="0.7"/>
+      <circle cx="100" cy="230" r="3" fill="#80d0d0" opacity="0.6"/>
+      <circle cx="120" cy="255" r="6" fill="none" stroke="#80d0d0" stroke-width="1.5" opacity="0.6"/>
+      <circle cx="170" cy="245" r="7" fill="none" stroke="#80d0d0" stroke-width="1.5" opacity="0.7"/>
+      <circle cx="195" cy="225" r="5" fill="none" stroke="#80d0d0" stroke-width="1.5" opacity="0.6"/>
+
+      <!-- ── HANDS ── -->
+      <!-- left hand holding sword hilt -->
+      <ellipse cx="38" cy="272" rx="14" ry="12" fill="url(#skinGrad)"/>
+      <!-- right hand -->
+      <ellipse cx="262" cy="272" rx="14" ry="12" fill="url(#skinGrad)"/>
+
+      <!-- ── SWORD ── -->
+      <!-- blade -->
+      <path d="M245,280 L55,380" stroke="url(#bladeGrad)" stroke-width="5" stroke-linecap="round" filter="url(#glow)"/>
+      <defs>
+        <linearGradient id="bladeGrad" x1="245" y1="280" x2="55" y2="380" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#e0f0ff"/>
+          <stop offset="50%" stop-color="#90c0e0"/>
+          <stop offset="100%" stop-color="#4080a0"/>
+        </linearGradient>
+      </defs>
+      <!-- guard (tsuba) -->
+      <ellipse cx="150" cy="330" rx="14" ry="8" fill="#c0a040" transform="rotate(-32 150 330)"/>
+      <!-- grip -->
+      <line x1="162" y1="318" x2="245" y2="278" stroke="#4a3020" stroke-width="8" stroke-linecap="round"/>
+      <!-- grip wrap -->
+      <line x1="175" y1="312" x2="185" y2="307" stroke="#c0a040" stroke-width="2.5" opacity="0.8"/>
+      <line x1="192" y1="304" x2="202" y2="299" stroke="#c0a040" stroke-width="2.5" opacity="0.8"/>
+      <line x1="210" y1="296" x2="220" y2="291" stroke="#c0a040" stroke-width="2.5" opacity="0.8"/>
+      <line x1="228" y1="287" x2="238" y2="282" stroke="#c0a040" stroke-width="2.5" opacity="0.8"/>
+      <!-- blade glow -->
+      <path d="M245,280 L55,380" stroke="rgba(160,220,255,0.3)" stroke-width="12" stroke-linecap="round"/>
+
+      <!-- ── HEAD ── -->
+      <!-- neck -->
+      <rect x="132" y="155" width="36" height="35" rx="10" fill="url(#skinGrad)"/>
+      <!-- head -->
+      <ellipse cx="150" cy="115" rx="70" ry="72" fill="url(#faceGrad)"/>
+      <!-- ear left -->
+      <ellipse cx="82" cy="115" rx="18" ry="20" fill="url(#skinGrad)"/>
+      <ellipse cx="82" cy="115" rx="10" ry="12" fill="#c09060" opacity="0.6"/>
+      <!-- ear right -->
+      <ellipse cx="218" cy="115" rx="18" ry="20" fill="url(#skinGrad)"/>
+      <ellipse cx="218" cy="115" rx="10" ry="12" fill="#c09060" opacity="0.6"/>
+
+      <!-- ── FACE ── -->
+      <!-- brow ridge shadow -->
+      <ellipse cx="150" cy="90" rx="48" ry="10" fill="#8a6030" opacity="0.3"/>
+      <!-- eyebrows – furrowed/intense -->
+      <path d="M110,88 C118,82 130,80 140,84" stroke="#4a3010" stroke-width="4" stroke-linecap="round" fill="none"/>
+      <path d="M160,84 C170,80 182,82 190,88" stroke="#4a3010" stroke-width="4" stroke-linecap="round" fill="none"/>
+      <!-- eyes -->
+      <ellipse cx="125" cy="105" rx="16" ry="14" fill="#1a1008"/>
+      <ellipse cx="175" cy="105" rx="16" ry="14" fill="#1a1008"/>
+      <!-- eye shine -->
+      <circle cx="130" cy="100" r="5" fill="white" opacity="0.9"/>
+      <circle cx="180" cy="100" r="5" fill="white" opacity="0.9"/>
+      <circle cx="132" cy="102" r="2.5" fill="#ffffff"/>
+      <circle cx="182" cy="102" r="2.5" fill="#ffffff"/>
+      <!-- iris -->
+      <circle cx="125" cy="106" r="8" fill="#3a2808" opacity="0.8"/>
+      <circle cx="175" cy="106" r="8" fill="#3a2808" opacity="0.8"/>
+
+      <!-- nose -->
+      <ellipse cx="150" cy="125" rx="14" ry="10" fill="#b07040" opacity="0.7"/>
+      <circle cx="144" cy="127" r="4" fill="#6a3010" opacity="0.5"/>
+      <circle cx="156" cy="127" r="4" fill="#6a3010" opacity="0.5"/>
+
+      <!-- mouth – set/determined -->
+      <path d="M130,142 C138,148 162,148 170,142" stroke="#6a3010" stroke-width="3" fill="none" stroke-linecap="round"/>
+
+      <!-- cheek blush -->
+      <ellipse cx="108" cy="128" rx="14" ry="8" fill="#e09060" opacity="0.25"/>
+      <ellipse cx="192" cy="128" rx="14" ry="8" fill="#e09060" opacity="0.25"/>
+
+      <!-- ── HAIR spike ── -->
+      <path d="M115,50 C120,20 150,5 150,5 C150,5 180,20 185,50 C175,45 165,42 150,44 C135,42 125,45 115,50 Z" fill="url(#hairGrad)"/>
+      <path d="M95,65 C98,40 110,30 120,42 C112,45 107,55 108,65 Z" fill="url(#hairGrad)" opacity="0.85"/>
+      <path d="M205,65 C202,40 190,30 180,42 C188,45 193,55 192,65 Z" fill="url(#hairGrad)" opacity="0.85"/>
+
+      <!-- hair base/fade into head -->
+      <ellipse cx="150" cy="55" rx="65" ry="25" fill="url(#hairGrad)"/>
+    </svg>
+  </div>
+
+  <!-- Floating petals (JS-generated) -->
+  <div id="petals"></div>
+</section>
+
+<!-- ════════════ WAVE DIVIDER ════════════ -->
+<div class="wave-divider">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none" height="80" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,0 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,80 L0,80 Z" fill="#1a1428"/>
+  </svg>
+</div>
+
+<!-- ════════════ VISION SECTION ════════════ -->
+<section class="vision-section" id="vision">
+  <h2 class="section-title">VISION</h2>
+
+  <div class="divider-ornament">
+    <div class="line"></div>
+    <div class="diamond"></div>
+    <div class="line"></div>
+    <div class="diamond"></div>
+    <div class="line"></div>
+  </div>
+
+  <div class="vision-grid">
+    <div class="vision-col">
+      <p>
+        <strong>Shinsei Village</strong> is a collection featuring 1,200 demigod monkeys,
+        unraveling a mysterious case to save their village. The project is
+        not just a PFP collection, but a fascinating on-chain storyline.
+        Through a focus on community engagement, the project seeks
+        to build the <strong>new era of Web3 entertainment</strong>.
+      </p>
+    </div>
+    <div class="vision-col">
+      <p>
+        Each stage of development is aimed to deliver the adventure
+        experience to the community, as well as provide <strong>rewards
+        and benefits</strong> for all holders. Solve weekly puzzles to open
+        mystic boxes and collect <strong>$CLUE</strong>! Uncovering the plot is
+        entirely up to the vote and decisions of the community.
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Generate floating petals
+  const petalContainer = document.getElementById('petals');
+  for (let i = 0; i < 22; i++) {
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.top = (Math.random() * -20) + 'px';
+    p.style.animationDuration = (6 + Math.random() * 10) + 's';
+    p.style.animationDelay = (Math.random() * 12) + 's';
+    p.style.width = p.style.height = (5 + Math.random() * 7) + 'px';
+    p.style.opacity = 0.4 + Math.random() * 0.5;
+    // vary petal colors
+    const colors = ['#f0a8c8','#e890b8','#ffc0d8','#d870a0','#f8d0e0'];
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    petalContainer.appendChild(p);
+  }
+</script>
+</body>
+</html>

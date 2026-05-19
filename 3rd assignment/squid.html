@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Squid Game Landing Page</title>
+
+  <!-- GOOGLE FONTS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:'Poppins',sans-serif;
+    }
+
+    body{
+      background:#120010;
+      overflow-x:hidden;
+      color:white;
+    }
+
+    /* MAIN CONTAINER */
+
+    .main{
+      width:100%;
+      min-height:100vh;
+      position:relative;
+      overflow:hidden;
+
+      background:
+      linear-gradient(to right,
+      rgba(30,0,0,0.95),
+      rgba(53,0,65,0.85)),
+      url('https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1600&auto=format&fit=crop');
+
+      background-size:cover;
+      background-position:center;
+      padding:30px 60px;
+    }
+
+    /* NAVBAR */
+
+    .navbar{
+      width:100%;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      position:relative;
+      z-index:10;
+    }
+
+    .logo{
+      font-size:26px;
+      font-weight:700;
+      line-height:30px;
+      letter-spacing:2px;
+    }
+
+    .logo span{
+      color:#ff2678;
+    }
+
+    .nav-links{
+      display:flex;
+      gap:40px;
+      list-style:none;
+    }
+
+    .nav-links a{
+      text-decoration:none;
+      color:white;
+      font-size:15px;
+      transition:0.3s;
+    }
+
+    .nav-links a:hover{
+      color:#ff2678;
+    }
+
+    .menu{
+      font-size:30px;
+      cursor:pointer;
+    }
+
+    /* HERO SECTION */
+
+    .hero{
+      width:100%;
+      margin-top:50px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      position:relative;
+    }
+
+    /* LEFT CONTENT */
+
+    .left-content{
+      width:45%;
+      position:relative;
+      z-index:2;
+    }
+
+    .title{
+      font-size:90px;
+      font-weight:700;
+      line-height:90px;
+      letter-spacing:4px;
+      margin-bottom:25px;
+      position:relative;
+    }
+
+    .title span{
+      color:#ff2678;
+    }
+
+    .description{
+      color:#ddd;
+      line-height:28px;
+      margin-bottom:35px;
+      width:90%;
+    }
+
+    .buttons{
+      display:flex;
+      gap:20px;
+      align-items:center;
+    }
+
+    .btn{
+      padding:15px 35px;
+      border-radius:10px;
+      border:none;
+      font-size:16px;
+      cursor:pointer;
+      transition:0.3s;
+    }
+
+    .play-btn{
+      background:linear-gradient(to right,#ff2678,#ff8a00);
+      color:white;
+    }
+
+    .trailer-btn{
+      background:transparent;
+      border:1px solid #ff2678;
+      color:white;
+    }
+
+    .btn:hover{
+      transform:translateY(-4px);
+    }
+
+    /* RIGHT IMAGE */
+
+    .right-image{
+      width:45%;
+      position:relative;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+
+    .right-image img{
+      width:100%;
+      max-width:500px;
+      position:relative;
+      z-index:2;
+      filter:drop-shadow(0 0 30px rgba(255,0,120,0.4));
+    }
+
+    /* GLOW CIRCLE */
+
+    .glow{
+      width:420px;
+      height:420px;
+      background:#ff006e;
+      border-radius:50%;
+      filter:blur(120px);
+      position:absolute;
+      top:50%;
+      left:50%;
+      transform:translate(-50%,-50%);
+      opacity:0.25;
+    }
+
+    /* SIDE TEXT */
+
+    .side-text{
+      position:absolute;
+      right:-50px;
+      top:180px;
+      transform:rotate(90deg);
+      font-size:120px;
+      font-weight:700;
+      color:rgba(255,255,255,0.05);
+      letter-spacing:15px;
+    }
+
+    /* SCROLL TEXT */
+
+    .scroll{
+      position:absolute;
+      left:50%;
+      top:48%;
+      transform:translate(-50%,-50%) rotate(90deg);
+      color:#ddd;
+      font-size:14px;
+      letter-spacing:3px;
+    }
+
+    .scroll::after{
+      content:"";
+      width:2px;
+      height:70px;
+      background:#ff2678;
+      position:absolute;
+      top:35px;
+      left:50%;
+    }
+
+    /* CARD SECTION */
+
+    .cards{
+      width:100%;
+      margin-top:60px;
+      display:flex;
+      justify-content:center;
+      gap:25px;
+      position:relative;
+      z-index:3;
+    }
+
+    .card{
+      width:320px;
+      height:180px;
+      border-radius:20px;
+      overflow:hidden;
+      position:relative;
+      cursor:pointer;
+      transition:0.4s;
+    }
+
+    .card img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+
+    .card:hover{
+      transform:translateY(-10px);
+    }
+
+    .play-icon{
+      width:50px;
+      height:50px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.2);
+      backdrop-filter:blur(10px);
+
+      position:absolute;
+      bottom:15px;
+      right:15px;
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+
+      font-size:20px;
+    }
+
+    /* BACKGROUND BIG TEXT */
+
+    .bg-text{
+      position:absolute;
+      bottom:120px;
+      left:50px;
+      font-size:140px;
+      font-weight:700;
+      color:rgba(255,255,255,0.04);
+      letter-spacing:10px;
+      z-index:1;
+    }
+
+    /* RESPONSIVE */
+
+    @media(max-width:1100px){
+
+      .hero{
+        flex-direction:column;
+        gap:40px;
+      }
+
+      .left-content,
+      .right-image{
+        width:100%;
+        text-align:center;
+      }
+
+      .description{
+        width:100%;
+      }
+
+      .buttons{
+        justify-content:center;
+      }
+
+      .cards{
+        flex-direction:column;
+        align-items:center;
+      }
+
+      .title{
+        font-size:65px;
+        line-height:70px;
+      }
+
+      .side-text{
+        display:none;
+      }
+    }
+
+    @media(max-width:700px){
+
+      .main{
+        padding:20px;
+      }
+
+      .nav-links{
+        display:none;
+      }
+
+      .title{
+        font-size:48px;
+        line-height:55px;
+      }
+
+      .card{
+        width:100%;
+      }
+
+      .bg-text{
+        font-size:70px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+  <section class="main">
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+      <div class="logo">
+        SQUID <span>GAME</span>
+      </div>
+
+      <ul class="nav-links">
+        <li><a href="#">About</a></li>
+        <li><a href="#">Watch now</a></li>
+        <li><a href="#">Actors</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+
+      <div class="menu">☰</div>
+
+    </nav>
+
+    <!-- HERO -->
+
+    <div class="hero">
+
+      <!-- LEFT -->
+
+      <div class="left-content">
+
+        <h1 class="title">
+          SQUID <br>
+          <span>GAME</span>
+        </h1>
+
+        <p class="description">
+          Action / Thriller / Drama Series directed by Dong-hyuk Hwang
+          Season 1: 9 Episodes
+        </p>
+
+        <div class="buttons">
+          <button class="btn play-btn">▶ Play Now</button>
+          <button class="btn trailer-btn">Watch Trailer</button>
+        </div>
+
+      </div>
+
+      <!-- RIGHT -->
+
+      <div class="right-image">
+
+        <div class="glow"></div>
+
+        <img src="/guard-shapes-squid-game-pfp-8kdf06ff9b068iar-removebg-preview.png" alt="squid game">
+
+      </div>
+
+    </div>
+
+    <!-- SCROLL -->
+
+    <div class="scroll">SCROLL</div>
+
+    <!-- SIDE TEXT -->
+
+    <div class="side-text">
+      SQUID
+    </div>
+
+    <!-- BACKGROUND TEXT -->
+
+    <div class="bg-text">
+      GAME
+    </div>
+
+    <!-- CARDS -->
+
+    <div class="cards">
+
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1520034475321-cbe63696469a?q=80&w=1200&auto=format&fit=crop">
+
+        <div class="play-icon">▶</div>
+      </div>
+
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1200&auto=format&fit=crop">
+
+        <div class="play-icon">▶</div>
+      </div>
+
+      <div class="card">
+        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop">
+
+        <div class="play-icon">▶</div>
+      </div>
+
+    </div>
+
+  </section>
+
+</body>
+</html>
